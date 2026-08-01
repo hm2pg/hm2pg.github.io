@@ -23,7 +23,6 @@
             --border: rgba(255, 255, 255, 0.08); /* тонкая граница блоков */
             --radius: 16px;                     /* скругление углов */
             --transition: 0.2s ease;            /* плавность переходов */
-            --tap-min-height: 34px;             /* минимальная высота для удобного касания */
         }
 
         body {
@@ -111,12 +110,11 @@
         .bookmark-link {
             display: flex;
             align-items: center;
-            padding: 5px 10px;
+            padding: 2px 4px 2px 4px;
             text-decoration: none;
             color: var(--text-primary);
             font-size: 0.85rem;
             font-weight: 450;
-            min-height: var(--tap-min-height);   /* удобная область касания */
             transition: background var(--transition);
             -webkit-user-select: none;
             user-select: none;
@@ -173,19 +171,6 @@
             transform: scale(0.95);
         }
 
-        /* Адаптация для маленьких экранов */
-        @media (max-width: 420px) {
-            .bookmark-link {
-                padding: 4px 8px;
-            }
-            .bookmark-name {
-                font-size: 0.75rem;
-            }
-            .corner-btn {
-                top: 16px;
-                left: 16px;
-            }
-        }
     </style>
 </head>
 <body>
