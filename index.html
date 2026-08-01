@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Стартовая</title>
     <style>
+				@font-face {
+						font-family: 'Iosevka Web';
+						src: url('Iosevka548ss14leg-Regular.ttf') format('truetype');
+						/*font-weight: 400;*/
+						font-style: normal;
+				}
         /* Сброс стандартных отступов и border-box для удобства расчётов */
         *, *::before, *::after {
             margin: 0;
@@ -26,7 +32,7 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-family: 'Iosevka Web', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             background: var(--bg);
             color: var(--text-primary);
             height: 100vh;                       /* занимает всю высоту экрана */
@@ -148,15 +154,15 @@
         /* Кнопка выбора папки с фонами */
         .corner-btn {
             position: fixed;
-            top: 24px;
-            left: 24px;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: rgba(30, 30, 30, 0.8);
+            top: 20px;
+            left: 20px;
+            width: 24px;
+            height: 24px;
+            border-radius: 18%;
+            background: hsla(0, 0%, 0%, 0.2);
             border: 1px solid rgba(255,255,255,0.15);
             color: var(--text-primary);
-            font-size: 1.4rem;
+            font-size: 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -175,7 +181,7 @@
 </head>
 <body>
     <!-- Кнопка для выбора папки с фоновыми изображениями -->
-    <button id="changeFolderBtn" class="corner-btn" title="Выбрать папку с фонами">📁</button>
+    <button id="changeFolderBtn" class="corner-btn" title="Выбрать папку с фонами">+</button>
     <!-- Скрытый input для выбора папки -->
     <input type="file" id="folderInput" webkitdirectory directory multiple accept="image/*" style="display: none;">
 
@@ -188,7 +194,7 @@
             <!-- Столбец 1: 7 закладок -->
             <section class="bookmark-group">
                 <ul class="bookmark-list">
-                    <li class="bookmark-item"><a href="https://pornovideoshub.com/category/femdom/" class="bookmark-link" target="_blank" rel="noopener"><span class="bookmark-name">pornovideoshub</span></a></li>
+                    <li class="bookmark-item"><a href="https://pornovideoshub.com/category/femdom/" class="bookmark-link" target="_blank" rel="noopener"><span class="bookmark-name">prnvdshub</span></a></li>
                     <li class="bookmark-item"><a href="https://simpcity.cr/watched/threads" class="bookmark-link" target="_blank" rel="noopener"><span class="bookmark-name">simpcity</span></a></li>
                     <li class="bookmark-item"><a href="https://balbums.st/" class="bookmark-link" target="_blank" rel="noopener"><span class="bookmark-name">balbums</span></a></li>
                     <li class="bookmark-item"><a href="https://photos.google.com" class="bookmark-link" target="_blank" rel="noopener"><span class="bookmark-name">Google Фото</span></a></li>
