@@ -5,33 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Стартовая</title>
     <style>
+        /* Сброс стандартных отступов и border-box для удобства расчётов */
         *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        /* Переменные для цветовой схемы и размеров */
         :root {
-            --bg: #121212;
-            --surface: rgba(30, 30, 30, 0.85);
-            --surface-hover: rgba(42, 42, 42, 0.8);
-            --text-primary: #e0e0e0;
+            --bg: #121212;                      /* основной фон страницы */
+            --surface: rgba(30, 30, 30, 0.85); /* цвет блоков (полупрозрачный) */
+            --surface-hover: rgba(42, 42, 42, 0.8); /* фон при наведении/нажатии */
+            --text-primary: hsl(0, 0%, 40%);            /* основной цвет текста */
             --text-secondary: #a0a0a0;
             --accent: #6eb5ff;
-            --border: rgba(255, 255, 255, 0.08);
-            --shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-            --radius: 16px;
-            --transition: 0.2s ease;
-            --tap-min-height: 44px;
+            --border: rgba(255, 255, 255, 0.08); /* тонкая граница блоков */
+            --radius: 16px;                     /* скругление углов */
+            --transition: 0.2s ease;            /* плавность переходов */
+            --tap-min-height: 34px;             /* минимальная высота для удобного касания */
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             background: var(--bg);
             color: var(--text-primary);
-            height: 100vh;
+            height: 100vh;                       /* занимает всю высоту экрана */
             display: flex;
-            flex-direction: column;
+            flex-direction: column;              /* вертикальное расположение: фон и закладки */
             padding: 12px;
             gap: 12px;
             -webkit-tap-highlight-color: transparent;
@@ -40,7 +41,7 @@
 
         /* Верхний блок с фоновой картинкой – занимает 3/4 высоты */
         .background-block {
-            flex: 3;
+            flex: 3;                             /* 3 части от общего flex-пространства */
             border-radius: var(--radius);
             background-color: var(--surface);
             background-size: cover;
@@ -54,101 +55,99 @@
 
         /* Нижний блок с закладками – занимает 1/4 высоты */
         .bookmarks-block {
-            flex: 1;
+            flex: 1;                             /* 1 часть высоты */
             border-radius: var(--radius);
             background: var(--surface);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--border);
-            box-shadow: var(--shadow);
-            overflow: hidden;
+            /* Включаем прокрутку внутри, если содержимое не помещается */
+            overflow-x: auto;                    /* горизонтальная прокрутка при переполнении */
+            overflow-y: auto;                    /* вертикальная прокрутка, если закладки не влезают по высоте */
+            -webkit-overflow-scrolling: touch;   /* плавный скролл на iOS */
+            scrollbar-width: thin;               /* тонкий скроллбар для Firefox */
+            scrollbar-color: #555 #1e1e1e;
             display: flex;
             align-items: stretch;
             position: relative;
             z-index: 1;
         }
 
-        /* Внутренний контейнер для двух столбцов закладок */
+        /* Контейнер для трёх равных столбцов закладок */
         .container {
             display: flex;
             flex-direction: row;
-            justify-content: center;
-            align-items: flex-end;
-            gap: 12px;
-            padding: 12px 16px;
+            flex-wrap: nowrap;                   /* столбцы не переносятся, при нехватке ширины появится горизонтальный скролл */
+            justify-content: space-evenly;       /* равномерное распределение с отступами по краям */
+            align-items: flex-start;             /* выравнивание по верхнему краю */
+            gap: 8px;                            /* расстояние между столбцами */
+            padding: 8px 12px;
             width: 100%;
+            min-width: 100%;
+            /* Высота определяется содержимым, чтобы при переполнении появился вертикальный скролл */
         }
 
+        /* Один столбец (группа закладок) */
         .bookmark-group {
             background: transparent;
             border-radius: var(--radius);
             overflow: hidden;
-            flex: 1 1 0;
-            min-width: 0;
-            max-width: 220px;
+            flex: 1 1 0;                         /* столбцы растягиваются равномерно */
+            min-width: 0;                        /* позволяет сжиматься уже своей ширины */
+            max-width: 280px;                    /* чтобы текст не разъезжался на больших экранах */
         }
 
-        /* Убираем заголовки групп (стили больше не нужны) */
+        /* Заголовки групп скрыты */
         .group-title {
             display: none;
         }
 
+        /* Список закладок */
         .bookmark-list {
             list-style: none;
             display: flex;
             flex-direction: column;
         }
 
-        .bookmark-item {
-            border-top: 1px solid var(--border);
-        }
-
+        /* Одна ссылка-закладка */
         .bookmark-link {
             display: flex;
             align-items: center;
-            padding: 10px 14px;
+            padding: 5px 10px;
             text-decoration: none;
             color: var(--text-primary);
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             font-weight: 450;
-            min-height: var(--tap-min-height);
+            min-height: var(--tap-min-height);   /* удобная область касания */
             transition: background var(--transition);
-            gap: 8px;
             -webkit-user-select: none;
             user-select: none;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;             /* многоточие для длинного текста */
         }
 
+        /* Подсветка при касании (активное состояние) */
         .bookmark-link:active {
             background: var(--surface-hover);
             outline: none;
         }
 
+        /* Подсветка при наведении для устройств с мышью */
         @media (hover: hover) {
             .bookmark-link:hover {
                 background: var(--surface-hover);
             }
         }
 
-        .bookmark-icon {
-            width: 26px;
-            height: 26px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            flex-shrink: 0;
-            opacity: 0.85;
-        }
-
+        /* Текст названия закладки */
         .bookmark-name {
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             line-height: 1.2;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        /* Кнопка выбора папки – фиксирована в левом верхнем углу */
+        /* Кнопка выбора папки с фонами */
         .corner-btn {
             position: fixed;
             top: 24px;
@@ -157,8 +156,6 @@
             height: 44px;
             border-radius: 50%;
             background: rgba(30, 30, 30, 0.8);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
             border: 1px solid rgba(255,255,255,0.15);
             color: var(--text-primary);
             font-size: 1.4rem;
@@ -176,13 +173,13 @@
             transform: scale(0.95);
         }
 
-        /* Адаптация для очень узких экранов */
-        @media (max-width: 360px) {
+        /* Адаптация для маленьких экранов */
+        @media (max-width: 420px) {
             .bookmark-link {
-                padding: 8px 12px;
+                padding: 4px 8px;
             }
             .bookmark-name {
-                font-size: 0.85rem;
+                font-size: 0.75rem;
             }
             .corner-btn {
                 top: 16px;
@@ -192,75 +189,68 @@
     </style>
 </head>
 <body>
-    <!-- Кнопка выбора папки с фонами -->
+    <!-- Кнопка для выбора папки с фоновыми изображениями -->
     <button id="changeFolderBtn" class="corner-btn" title="Выбрать папку с фонами">📁</button>
-
-    <!-- Скрытый инпут для выбора папки -->
+    <!-- Скрытый input для выбора папки -->
     <input type="file" id="folderInput" webkitdirectory directory multiple accept="image/*" style="display: none;">
 
-    <!-- Верхний блок – 3/4 экрана -->
+    <!-- Блок с фоновым изображением (верхние 3/4) -->
     <div id="backgroundBlock" class="background-block"></div>
 
-    <!-- Нижний блок – 1/4 экрана, с закладками -->
+    <!-- Блок с закладками (нижняя 1/4) -->
     <div class="bookmarks-block">
         <div class="container">
-            <!-- Ячейка 1 -->
+            <!-- Столбец 1: 7 закладок -->
             <section class="bookmark-group">
                 <ul class="bookmark-list">
-                    <li class="bookmark-item">
-                        <a href="https://pornovideoshub.com/category/femdom/" class="bookmark-link" target="_blank" rel="noopener">
-                            <span class="bookmark-icon">🐙</span>
-                            <span class="bookmark-name">prnvdshb</span>
-                        </a>
-                    </li>
-                    <li class="bookmark-item">
-                        <a href="https://mail.google.com" class="bookmark-link" target="_blank" rel="noopener">
-                            <span class="bookmark-icon">📧</span>
-                            <span class="bookmark-name">Gmail</span>
-                        </a>
-                    </li>
-                    <li class="bookmark-item">
-                        <a href="https://drive.google.com" class="bookmark-link" target="_blank" rel="noopener">
-                            <span class="bookmark-icon">📁</span>
-                            <span class="bookmark-name">Google Диск</span>
-                        </a>
-                    </li>
+                    <li class="bookmark-item"><a href="https://pornovideoshub.com/category/femdom/" class="bookmark-link" target="_blank" rel="noopener"><span class="bookmark-name">prnvdshb</span></a></li>
+                    <li class="bookmark-item"><a href="https://mail.google.com" class="bookmark-link" target="_blank" rel="noopener"><span class="bookmark-name">Gmail</span></a></li>
+                    <li class="bookmark-item"><a href="https://drive.google.com" class="bookmark-link" target="_blank" rel="noopener"><span class="bookmark-name">Google Диск</span></a></li>
+                    <li class="bookmark-item"><a href="https://photos.google.com" class="bookmark-link" target="_blank" rel="noopener"><span class="bookmark-name">Google Фото</span></a></li>
+                    <li class="bookmark-item"><a href="https://keep.google.com" class="bookmark-link" target="_blank" rel="noopener"><span class="bookmark-name">Google Keep</span></a></li>
+                    <li class="bookmark-item"><a href="https://calendar.google.com" class="bookmark-link" target="_blank" rel="noopener"><span class="bookmark-name">Календарь</span></a></li>
+                    <li class="bookmark-item"><a href="https://translate.google.com" class="bookmark-link" target="_blank" rel="noopener"><span class="bookmark-name">Переводчик</span></a></li>
                 </ul>
             </section>
 
-            <!-- Ячейка 2 -->
+            <!-- Столбец 2: 7 закладок -->
             <section class="bookmark-group">
                 <ul class="bookmark-list">
-                    <li class="bookmark-item">
-                        <a href="https://youtube.com" class="bookmark-link" target="_blank" rel="noopener">
-                            <span class="bookmark-icon">▶️</span>
-                            <span class="bookmark-name">YouTube</span>
-                        </a>
-                    </li>
-                    <li class="bookmark-item">
-                        <a href="https://reddit.com" class="bookmark-link" target="_blank" rel="noopener">
-                            <span class="bookmark-icon">🧵</span>
-                            <span class="bookmark-name">Reddit</span>
-                        </a>
-                    </li>
-                    <li class="bookmark-item">
-                        <a href="https://habr.com/ru/" class="bookmark-link" target="_blank" rel="noopener">
-                            <span class="bookmark-icon">📰</span>
-                            <span class="bookmark-name">Habr</span>
-                        </a>
-                    </li>
+                    <li class="bookmark-item"><a href="https://youtube.com" class="bookmark-link" target="_blank" rel="noopener"><span class="bookmark-name">YouTube</span></a></li>
+                    <li class="bookmark-item"><a href="https://reddit.com" class="bookmark-link" target="_blank" rel="noopener"><span class="bookmark-name">Reddit</span></a></li>
+                    <li class="bookmark-item"><a href="https://habr.com/ru/" class="bookmark-link" target="_blank" rel="noopener"><span class="bookmark-name">Habr</span></a></li>
+                    <li class="bookmark-item"><a href="https://github.com" class="bookmark-link" target="_blank" rel="noopener"><span class="bookmark-name">GitHub</span></a></li>
+                    <li class="bookmark-item"><a href="https://stackoverflow.com" class="bookmark-link" target="_blank" rel="noopener"><span class="bookmark-name">Stack Overflow</span></a></li>
+                    <li class="bookmark-item"><a href="https://wikipedia.org" class="bookmark-link" target="_blank" rel="noopener"><span class="bookmark-name">Wikipedia</span></a></li>
+                    <li class="bookmark-item"><a href="https://twitter.com" class="bookmark-link" target="_blank" rel="noopener"><span class="bookmark-name">Twitter</span></a></li>
+                </ul>
+            </section>
+
+            <!-- Столбец 3: 7 закладок -->
+            <section class="bookmark-group">
+                <ul class="bookmark-list">
+                    <li class="bookmark-item"><a href="https://chat.openai.com" class="bookmark-link" target="_blank" rel="noopener"><span class="bookmark-name">ChatGPT</span></a></li>
+                    <li class="bookmark-item"><a href="https://figma.com" class="bookmark-link" target="_blank" rel="noopener"><span class="bookmark-name">Figma</span></a></li>
+                    <li class="bookmark-item"><a href="https://notion.so" class="bookmark-link" target="_blank" rel="noopener"><span class="bookmark-name">Notion</span></a></li>
+                    <li class="bookmark-item"><a href="https://trello.com" class="bookmark-link" target="_blank" rel="noopener"><span class="bookmark-name">Trello</span></a></li>
+                    <li class="bookmark-item"><a href="https://spotify.com" class="bookmark-link" target="_blank" rel="noopener"><span class="bookmark-name">Spotify</span></a></li>
+                    <li class="bookmark-item"><a href="https://netflix.com" class="bookmark-link" target="_blank" rel="noopener"><span class="bookmark-name">Netflix</span></a></li>
+                    <li class="bookmark-item"><a href="https://twitch.tv" class="bookmark-link" target="_blank" rel="noopener"><span class="bookmark-name">Twitch</span></a></li>
                 </ul>
             </section>
         </div>
     </div>
 
     <script>
+        // Самовызывающаяся функция для изоляции области видимости
         (function() {
+            // Настройки IndexedDB для хранения фоновых изображений
             const DB_NAME = 'BackgroundImagesDB';
             const STORE_NAME = 'images';
             const DB_VERSION = 1;
             let db = null;
 
+            // Открытие (или создание) базы данных
             function openDB() {
                 return new Promise((resolve, reject) => {
                     const request = indexedDB.open(DB_NAME, DB_VERSION);
@@ -280,6 +270,7 @@
                 });
             }
 
+            // Сохранение одного изображения в виде Blob в базу
             function saveImage(blob) {
                 return new Promise((resolve, reject) => {
                     const transaction = db.transaction(STORE_NAME, 'readwrite');
@@ -291,6 +282,7 @@
                 });
             }
 
+            // Получение всех сохранённых изображений
             function getAllImages() {
                 return new Promise((resolve, reject) => {
                     const transaction = db.transaction(STORE_NAME, 'readonly');
@@ -301,10 +293,11 @@
                 });
             }
 
+            // Установка случайного фонового изображения для указанного элемента
             function setRandomBackground(images, element) {
                 const oldUrl = element.dataset.bgUrl;
                 if (oldUrl) {
-                    URL.revokeObjectURL(oldUrl);
+                    URL.revokeObjectURL(oldUrl); // освобождаем память от предыдущего blob URL
                 }
 
                 if (!images || images.length === 0) {
@@ -320,6 +313,7 @@
                 element.dataset.bgUrl = url;
             }
 
+            // Замена всех изображений в базе на файлы из выбранной папки
             async function replaceImagesFromFolder(files) {
                 const imageFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
                 if (imageFiles.length === 0) {
@@ -330,15 +324,18 @@
                 try {
                     const transaction = db.transaction(STORE_NAME, 'readwrite');
                     const store = transaction.objectStore(STORE_NAME);
+                    // Очистка хранилища
                     await new Promise((resolve, reject) => {
                         const clearRequest = store.clear();
                         clearRequest.onsuccess = resolve;
                         clearRequest.onerror = reject;
                     });
 
+                    // Сохранение новых изображений
                     const savePromises = imageFiles.map(file => saveImage(file));
                     await Promise.all(savePromises);
 
+                    // Установка случайного фона после обновления
                     const images = await getAllImages();
                     setRandomBackground(images, document.getElementById('backgroundBlock'));
                 } catch (err) {
@@ -347,6 +344,7 @@
                 }
             }
 
+            // Инициализация приложения
             async function init() {
                 try {
                     await openDB();
@@ -359,11 +357,13 @@
                 const folderInput = document.getElementById('folderInput');
                 const changeBtn = document.getElementById('changeFolderBtn');
 
+                // Открытие диалога выбора папки
                 changeBtn.addEventListener('click', () => {
-                    folderInput.value = '';
+                    folderInput.value = ''; // сброс, чтобы событие change сработало даже при повторном выборе той же папки
                     folderInput.click();
                 });
 
+                // Обработка выбранных файлов
                 folderInput.addEventListener('change', (event) => {
                     if (event.target.files.length > 0) {
                         replaceImagesFromFolder(event.target.files);
@@ -371,6 +371,7 @@
                 });
             }
 
+            // Запуск после готовности DOM
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', init);
             } else {
